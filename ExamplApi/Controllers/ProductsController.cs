@@ -2,6 +2,7 @@
 using ExamplApi.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamplApi.Controllers
 {
@@ -18,15 +19,22 @@ namespace ExamplApi.Controllers
 
 
         // GET: ProductsController
-        public  ActionResult<Product> GetProducts()
+        [HttpGet]
+        public async Task <ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return View();
+            return await _context.Products.ToListAsync();
         }
 
         // GET: ProductsController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProduct(string id)
         {
-            return View();
+            var product= await _context.Products.FindAsync(id);
+            if (product==null)
+            {
+                return NotFound();
+            }
+            return product;
         }
 
         // GET: ProductsController/Create
