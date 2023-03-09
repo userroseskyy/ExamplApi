@@ -27,7 +27,7 @@ namespace ExamplApi.Controllers
 
         // GET: ProductsController/Details/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProduct(string id)
+        public async Task<ActionResult<Product>> GetProduct(string id)
         {
             var product= await _context.Products.FindAsync(id);
             if (product==null)
