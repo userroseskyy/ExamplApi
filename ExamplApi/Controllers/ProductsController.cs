@@ -1,12 +1,24 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ExamplApi.Data;
+using ExamplApi.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamplApi.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+
+        public ProductsController(ApplicationDbContext context)
+        {
+            _context=context;
+        }
+
+
+
         // GET: ProductsController
-        public ActionResult Index()
+        public  ActionResult<Product> GetProducts()
         {
             return View();
         }
