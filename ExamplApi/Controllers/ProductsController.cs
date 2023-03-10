@@ -22,7 +22,7 @@ namespace ExamplApi.Controllers
 
         // GET: ProductsController
         [HttpGet]
-        public async Task <ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             return await _context.Products.ToListAsync();
         }
@@ -31,7 +31,7 @@ namespace ExamplApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(string id)
         {
-            var product= await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
             if (product==null)
             {
                 return NotFound();
@@ -40,66 +40,53 @@ namespace ExamplApi.Controllers
         }
 
         // GET: ProductsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+
 
         // POST: ProductsController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        
+        public async Task<ActionResult<Product>> Postproduct(Product product)
         {
+
+            _context.Products.Add(product);
             try
             {
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            catch
+            catch (DbUpdateException)
             {
-                return View();
+                if (productExists(product.id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
             }
+
+            return CreatedAtAction("Getproduct", new { id = product.id }, product);
         }
 
-        // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
+        // DELETE: api/product/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Deleteproduct(string id)
         {
-            return View();
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
-        // POST: ProductsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        private bool productExists(string id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ProductsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return _context.Products.Any(e => e.id == id);
         }
     }
 }
