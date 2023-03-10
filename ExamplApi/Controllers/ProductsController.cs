@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExamplApi.Controllers
 {
+    [Route("[controller]")]
+    [ApiController]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
