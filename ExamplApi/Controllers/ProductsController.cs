@@ -39,12 +39,39 @@ namespace ExamplApi.Controllers
             return product;
         }
 
-        // GET: ProductsController/Create
+        // GET: ProductsController/Edit
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Putproduct(string id, Product product)
+        {
+            if (id != product.id)
+            {
+                return BadRequest();
+            }
 
+            _context.Entry(product).State = EntityState.Modified;
 
-        // POST: ProductsController/Create
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!productExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/product
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        
         public async Task<ActionResult<Product>> Postproduct(Product product)
         {
 
