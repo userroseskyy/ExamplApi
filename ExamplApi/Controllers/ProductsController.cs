@@ -40,10 +40,10 @@ namespace ExamplApi.Controllers
         }
 
         // GET: ProductsController/Edit
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Putproduct(string id, Product product)
+        [HttpPut]
+        public async Task<IActionResult> Putproduct( Product product)
         {
-            if (id != product.id)
+            if (product.id != product.id)
             {
                 return BadRequest();
             }
@@ -56,7 +56,7 @@ namespace ExamplApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!productExists(id))
+                if (!productExists(product.id))
                 {
                     return NotFound();
                 }
