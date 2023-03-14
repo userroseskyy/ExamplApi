@@ -40,10 +40,10 @@ namespace ExamplApi.Controllers
         }
 
         // GET: ProductsController/Edit
-        [HttpPut]
-        public async Task<IActionResult> Putproduct( Product product)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Product>> Putproduct(string id, Product product)
         {
-            if (product.id != product.id)
+            if (id != product.id)
             {
                 return BadRequest();
             }
