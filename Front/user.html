@@ -1,0 +1,178 @@
+<head>
+      <title>Learn Shop</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+</head>
+
+<body style="display: flex; justify-content: center;">
+      <div id="main">
+
+            <div class="head">
+                  <div class="head-inner">
+                        <h1>فروشگاه یادگیری</h1>
+                  </div>
+            </div>
+
+            <div class="my-body">
+
+                  <div class="filters">
+                        <h2>جستجوی محصول</h2>
+
+                        <br>
+                        <div class="my-row">
+                              <div>
+                                    <label for="">نام: </label>
+                                    <input type="text" name="name" id="name0">
+                              </div>
+                              <input type="button" value="بگرد" id="search-name">
+                        </div>
+                        <div class="my-row">
+                              <div>
+                                    <label for="">دسته بندی: </label>
+                                    <input type="text" name="name" id="name0">
+                              </div>
+                              <input type="button" value="بگرد" id="search-name">
+                        </div>
+                        <div class="my-row">
+                              <div>
+                                    <label for="">قیمت: </label>
+                                    از <input type="number" name="name" id="name0" style="width: 100px;">
+                                    تا <input type="text" name="name" id="name0" style="width: 100px;">
+                              </div>
+                              <input type="button" value="بگرد" id="search-name">
+                        </div>
+                        <div class="my-row">
+                              <div>
+                                    <input type="checkbox" name="" id="name0">
+                                    <label for="">فقط کالا های موجود </label>
+                              </div>
+                        </div>
+                  </div>
+
+                  <div class="results" id="results">
+                        <!-- <div class="pr-card">
+                              <div class="pr-img">
+                                    <img src="assets/images/book1.png" alt="">
+                              </div>
+                              <h3>نام محصول: <span>کتاب</span></h3>
+                              <h6>دسته بندی: <span>آموزشی</span></h6>
+                              <h6>قیمت: <span>20000</span> تومان - موجودی: <span>1</span> عدد</h6>
+                              <h4>توضیحات: <span>این محصول است</span></h4>
+                        </div>
+                        <div class="pr-card">
+                              <h3>نام محصول: <span>کتاب</span></h3>
+                              <h6>دسته بندی: <span>آموزشی</span></h6>
+                              <h6>قیمت: <span>20000</span> تومان - موجودی: <span>1</span> عدد</h6>
+                              <h4>توضیحات: <span>این محصول است</span></h4>
+                        </div> -->
+                  </div>
+            </div>
+
+      </div>
+      <style>
+            .pr-img {
+                  display: flex;
+                  justify-content: center;
+            }
+
+            .pr-img img {
+                  max-width: 120px;
+                  max-height: 200px;
+            }
+
+            .pr-card {
+                  margin: 5px;
+                  padding: 10px;
+                  background-color: antiquewhite;
+                  border-radius: 6px;
+            }
+
+            .results {
+                  padding: 15px;
+                  border: 2px rgba(192, 192, 192, 0.596) solid;
+                  border-radius: 16px;
+                  background-color: rgba(252, 212, 207, 0.904);
+                  margin-top: 15px;
+            }
+
+            .filters {
+                  padding: 15px;
+                  border: 2px rgba(192, 192, 192, 0.596) solid;
+                  border-radius: 16px;
+                  background-color: rgba(252, 212, 207, 0.904);
+
+            }
+
+            .my-body {
+                  margin: 4vh;
+                  height: 60vh;
+                  overflow-y: scroll;
+                  direction: rtl;
+            }
+
+            .my-row {
+                  justify-content: space-between !important;
+                  display: flex;
+                  padding-bottom: 15px;
+                  border-bottom: 2px rgba(192, 192, 192, 0.596) solid;
+                  margin-bottom: 15px;
+            }
+
+            .my-body::-webkit-scrollbar {
+                  display: none;
+            }
+
+            #main {
+                  width: 400px;
+                  height: 95vh;
+                  border: 4px red solid;
+                  border-radius: 36px;
+                  background-color: rgb(250, 192, 186);
+            }
+
+            .head {
+                  display: flex;
+                  justify-content: center;
+                  color: rgb(184, 62, 58);
+
+            }
+
+            .head-inner {
+                  background-color: rgb(255, 255, 255);
+                  padding: 10px 60px;
+                  margin-top: 30px;
+                  border-radius: 16px;
+            }
+
+            .head h1 {
+                  text-shadow: 2px 6px 10px red;
+
+            }
+      </style>
+
+      <script>
+            $.ajax({
+                  type: "get",
+                  contentType: "application/json; charset=utf-8",
+                  url: 'https://localhost:7236/products',
+                  success: function (res) {
+                        console.info(res)
+                        for (let i = 0; i < res.length; i++) {
+                              var product = `
+                               <div class="pr-card">
+                              <div class="pr-img">
+                                    <img src="assets/images/${res[i].image}" alt="">
+                              </div>
+                              <h3>نام محصول: <span>${res[i].name}</span></h3>
+                              <h6>دسته بندی: <span>${res[i].category}</span></h6>
+                              <h6>قیمت: <span>${res[i].price}</span> تومان - موجودی: <span>${res[i].quantity}</span> عدد</h6>
+                              <h4>توضیحات: <span>${res[i].description}</span></h4>
+                        </div>
+                              `
+                              $('#results').append(product)
+
+                        }
+                  }
+            });
+      </script>
+</body>
